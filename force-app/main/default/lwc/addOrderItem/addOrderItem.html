@@ -25,7 +25,7 @@
                         </template>
                         <p>Price: {dish.fields.Price__c.value}$</p>
     
-                        <lightning-record-edit-form object-api-name={objectApiName}>
+                        <lightning-record-edit-form object-api-name={objectApiName} >
     
                             <lightning-input type="number"
                                 label="Amount of dishes"
@@ -35,12 +35,12 @@
                             <lightning-input label="Comment">
                             </lightning-input>
     
-                            <div class="slds-text-align_center modal_buttons">
-                                <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
-                                <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">OK</button>
-                            </div>
-    
                         </lightning-record-edit-form>
+
+                        <div class="slds-text-align_center modal_buttons">
+                            <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
+                            <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">OK</button>
+                        </div>
     
                     </template>
     
