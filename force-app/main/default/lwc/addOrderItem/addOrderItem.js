@@ -2,6 +2,9 @@ import { LightningElement, api, wire } from 'lwc';
 import { getRecord, createRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
+import MESSAGE_CHANNEL from "@salesforce/messageChannel/OrderItemMessage__c";
+import { publish, MessageContext } from 'lightning/messageService';
+
 import TITLE_FIELD from '@salesforce/schema/Dish__c.Name';
 import DESCRIPTION_FIELD from '@salesforce/schema/Dish__c.Description__c';
 import PRICE_FIELD from '@salesforce/schema/Dish__c.Price__c';
@@ -19,6 +22,9 @@ export default class AddOredItem extends LightningElement {
     ERROR_TITLE = 'Error';
     ERROR_MESSAGE = 'Error during adding new order item!';
     ERROR_VARIANT = 'error';
+
+    @wire(MessageContext)
+    messageContext;
 
     @api dishid;
     dish;
@@ -44,7 +50,6 @@ export default class AddOredItem extends LightningElement {
     }
 
     submitDetails(){
-        console.log('clicked Add!');
 
         const inputs = Array.from(this.template.querySelectorAll('lightning-input'));
         const [amount, comment] = inputs;
@@ -58,18 +63,22 @@ export default class AddOredItem extends LightningElement {
             }
         };
 
-        console.log(recordInput);
-
         createRecord(recordInput)
         .then(result => {
-            console.log(result);
             this.showToast(this.SUCCESS_TITLE, this.SUCCESS_MESSAGE, this.SUCCESS_VARIANT);
+            this.publishMessage(result);
             this.closeModal();
         })
         .catch(error => {
             this.showToast(this.ERROR_TITLE, this.ERROR_MESSAGE, this.ERROR_VARIANT);
-            this.closeModal();
         })
+    }
+
+    publishMessage(orderItem) {
+        const message = {
+            orderItem
+        };
+        publish(this.messageContext, MESSAGE_CHANNEL, message);
     }
 
     showToast(title, message, variant){
