@@ -155,8 +155,9 @@
     <externalSharingModel>Private</externalSharingModel>
     <label>Dish</label>
     <nameField>
+        <displayFormat>DS-{0000}</displayFormat>
         <label>Dish Name</label>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Dishes</pluralLabel>
     <searchLayouts/>

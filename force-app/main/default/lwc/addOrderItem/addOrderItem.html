@@ -19,7 +19,7 @@
                 <div class="modal_form" id="modal-content-id-1">
     
                     <template if:true={dish}>
-                        <p>Dish title: {dish.fields.Name.value}</p>
+                        <p>Dish title: {dish.fields.Title__c.value}</p>
                         <template if:true={dish.fields.Description__c.value}>
                             <p>Decription: {dish.fields.Description__c.value}</p>
                         </template>

@@ -5,8 +5,8 @@
     <columns>Dish__c</columns>
     <columns>Amount__c</columns>
     <columns>Cost__c</columns>
-    <columns>Actual_Cost__c</columns>
     <columns>Comment__c</columns>
+    <columns>Restaurant_Order__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

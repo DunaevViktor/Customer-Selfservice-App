@@ -1,8 +1,12 @@
 import { LightningElement, wire, track } from 'lwc';
 import checkOrderExistence from '@salesforce/apex/RestaurantOrderController.checkOrderExistence';
 import getOrder from '@salesforce/apex/RestaurantOrderController.getOrder';
+import getOrderItemsByOrderId from '@salesforce/apex/OrderItemController.getOrderItemsByOrderId';
+import getOrderItemById from '@salesforce/apex/OrderItemController.getOrderItemById';
+
 import MESSAGE_CHANNEL from "@salesforce/messageChannel/OrderItemMessage__c";
-import { APPLICATION_SCOPE, subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import ORDER_MC from "@salesforce/messageChannel/OrderMessage__c";
+import { APPLICATION_SCOPE, subscribe, unsubscribe, MessageContext, publish } from 'lightning/messageService';
 
 export default class OrderDetailComponent extends LightningElement {
 
@@ -10,6 +14,8 @@ export default class OrderDetailComponent extends LightningElement {
     error;
     orderItems = [];
     isDetailsModalOpen = false;
+
+    @track totalPrice = 0.0;
 
     @wire(MessageContext)
     messageContext;
@@ -31,6 +37,10 @@ export default class OrderDetailComponent extends LightningElement {
         getOrder()
         .then(result => {
         this.order = result;
+        this.loadOrderItems();
+        setInterval(() => {
+            this.publishMessage();
+        }, 5000);
         })
         .catch(error => {
         this.error = error;
@@ -45,20 +55,12 @@ export default class OrderDetailComponent extends LightningElement {
                 (message) => this.handleMessage(message),
                 { scope: APPLICATION_SCOPE }
             );
-        }
-        else{
-            this.subscription = subscribe(
-                this.messageContext,
-                MESSAGE_CHANNEL,
-                (message) => {this.handleMessage(message);}
-            );
-        }
-        
+        }      
     }
 
     handleMessage(message) {
-        const orderItem = message.orderItem;
-        this.orderItems.push(orderItem);
+        this.totalPrice += message.orderItemPrice;
+        this.loadNewOrderItem(message.orderItemId);
     }
 
     unsubscribeToMessageChannel() {
@@ -70,12 +72,13 @@ export default class OrderDetailComponent extends LightningElement {
         this.unsubscribeToMessageChannel();
     }
 
-    get totalPrice() {
+    //+ , toFixed(2)
+    resolveTotalPrice() {
         let sum = 0;
         this.orderItems.forEach((orderItem) => {
-          sum += orderItem.fields.Cost__c.value;
+          sum += orderItem.Cost__c;
         });
-        return sum;
+        this.totalPrice = sum;
     }
 
     openDetailsModal() {
@@ -84,6 +87,34 @@ export default class OrderDetailComponent extends LightningElement {
 
     closeDetailsModal() {
         this.isDetailsModalOpen = false;
+    }
+
+    loadOrderItems() {
+        getOrderItemsByOrderId({id: this.order.Id})
+        .then(result => {
+            this.orderItems = result;
+            this.resolveTotalPrice();
+        })
+        .catch(error => {
+            this.error = error;
+        })
+    }
+
+    loadNewOrderItem(id) {
+        getOrderItemById({id: id})
+        .then(result => {
+            this.orderItems.push(result);
+        })
+        .catch(error => {
+            this.error = error;
+        })
+    }
+
+    publishMessage() {
+        const message = {
+            orderId: this.order.Id
+        };
+        publish(this.messageContext, ORDER_MC, message);
     }
     
 }
