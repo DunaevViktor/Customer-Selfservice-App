@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import checkOrderExistence from '@salesforce/apex/RestaurantOrderController.checkOrderExistence';
 import getOrder from '@salesforce/apex/RestaurantOrderController.getOrder';
 import MESSAGE_CHANNEL from "@salesforce/messageChannel/OrderItemMessage__c";
@@ -8,14 +8,13 @@ export default class OrderDetailComponent extends LightningElement {
 
     order;
     error;
-    orderItems;
+    orderItems = [];
+    isDetailsModalOpen = false;
 
     @wire(MessageContext)
     messageContext;
 
     connectedCallback() {
-
-        this.orderItems = [];
 
         checkOrderExistence()
         .then(result => {
@@ -47,11 +46,14 @@ export default class OrderDetailComponent extends LightningElement {
                 { scope: APPLICATION_SCOPE }
             );
         }
-        this.subscription = subscribe(
-            this.messageContext,
-            MESSAGE_CHANNEL, (message) => {
-                this.handleMessage(message);
-            });
+        else{
+            this.subscription = subscribe(
+                this.messageContext,
+                MESSAGE_CHANNEL,
+                (message) => {this.handleMessage(message);}
+            );
+        }
+        
     }
 
     handleMessage(message) {
@@ -66,6 +68,22 @@ export default class OrderDetailComponent extends LightningElement {
 
     disconnectedCallback() {
         this.unsubscribeToMessageChannel();
+    }
+
+    get totalPrice() {
+        let sum = 0;
+        this.orderItems.forEach((orderItem) => {
+          sum += orderItem.fields.Cost__c.value;
+        });
+        return sum;
+    }
+
+    openDetailsModal() {
+        this.isDetailsModalOpen = true;
+    }
+
+    closeDetailsModal() {
+        this.isDetailsModalOpen = false;
     }
     
 }
