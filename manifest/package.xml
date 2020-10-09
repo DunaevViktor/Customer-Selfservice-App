@@ -36,5 +36,9 @@
         <members>*</members>
         <name>CustomObject</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>Community</name>
+    </types>
     <version>49.0</version>
 </Package>
