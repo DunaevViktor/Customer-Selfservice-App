@@ -11,19 +11,14 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Accepted</fullName>
-                <default>false</default>
-                <label>Accepted</label>
+                <fullName>Open</fullName>
+                <default>true</default>
+                <label>Open</label>
             </value>
             <value>
-                <fullName>Delivered</fullName>
+                <fullName>Closed</fullName>
                 <default>false</default>
-                <label>Delivered</label>
-            </value>
-            <value>
-                <fullName>Canceled</fullName>
-                <default>false</default>
-                <label>Canceled</label>
+                <label>Closed</label>
             </value>
         </valueSetDefinition>
     </valueSet>

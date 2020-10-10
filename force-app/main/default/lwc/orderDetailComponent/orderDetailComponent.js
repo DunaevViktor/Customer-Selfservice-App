@@ -10,11 +10,12 @@ import { APPLICATION_SCOPE, subscribe, unsubscribe, MessageContext, publish } fr
 
 export default class OrderDetailComponent extends LightningElement {
 
-    order;
     error;
     orderItems = [];
-    isDetailsModalOpen = false;
+    isDetailsModalOpen = false
+    isConfirmModalOpen = false;
 
+    @track order;
     @track totalPrice = 0.0;
 
     @wire(MessageContext)
@@ -59,7 +60,7 @@ export default class OrderDetailComponent extends LightningElement {
     }
 
     handleMessage(message) {
-        this.totalPrice += message.orderItemPrice;
+        this.totalPrice =(+this.totalPrice + +message.orderItemPrice).toFixed(2);
         this.loadNewOrderItem(message.orderItemId);
     }
 
@@ -76,7 +77,7 @@ export default class OrderDetailComponent extends LightningElement {
     resolveTotalPrice() {
         let sum = 0;
         this.orderItems.forEach((orderItem) => {
-          sum += orderItem.Cost__c;
+          sum += +orderItem.Cost__c.toFixed(2);
         });
         this.totalPrice = sum;
     }
@@ -115,6 +116,30 @@ export default class OrderDetailComponent extends LightningElement {
             orderId: this.order.Id
         };
         publish(this.messageContext, ORDER_MC, message);
+    }
+
+    openConfirmModal() {
+        this.isConfirmModalOpen = true;
+    }
+
+    closeConfirmModal() {
+        this.isConfirmModalOpen = false;
+    }
+
+    makeOrder() {
+        this.closeDetailsModal();
+        this.openConfirmModal();
+    }
+
+    submitOrder() {
+        this.closeConfirmModal();
+        checkOrderExistence()
+        .then(result => {
+            this.loadOrder();
+        })
+        .catch(error => {
+            this.error = error;
+        })
     }
     
 }

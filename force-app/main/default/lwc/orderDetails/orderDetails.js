@@ -37,7 +37,8 @@ export default class OrderDetails extends LightningElement {
     }
 
     submitDetails(){
-        console.log('For test.');
+        const selectedEvent = new CustomEvent('makeorder', {detail: false});
+        this.dispatchEvent(selectedEvent);
     }
 
 }
