@@ -22,6 +22,10 @@ export default class MenuComponent extends LightningElement {
     @track currentPage = 1;
     @track amountPages = 0;
     @track itemsOnPage = 6;
+    @track isFirstDisabled = true;
+    @track isPreviousDisabled = true;
+    @track isNextDisabled = true;
+    @track isLastDisabled = true;
 
     connectedCallback(){
         this.loadMenu();
@@ -78,7 +82,7 @@ export default class MenuComponent extends LightningElement {
     }
 
     clickNextPage() {
-        if(this.currentPage == this.amountPages) return;
+        if(this.currentPage >= this.amountPages) return;
     
         this.currentPage++;
         this.resolveDisplayedDishes();
@@ -96,6 +100,10 @@ export default class MenuComponent extends LightningElement {
         this.resolveDisplayedDishes();
     }
 
+    get dishesLength() {
+        return this.displayesDishes == 0;
+    }
+
     amountChange(event) {
         this.itemsOnPage = event.detail;
         this.resolveDisplayedDishes();
@@ -107,6 +115,7 @@ export default class MenuComponent extends LightningElement {
         this.displayesDishes = filteredDishes.filter((item, index) => {
             return index >= (this.currentPage-1) * this.itemsOnPage && index < (this.currentPage) * this.itemsOnPage;
         });
+        this.repaintPaginationButtons();
     }
 
     categoryChange(event) {
@@ -115,6 +124,7 @@ export default class MenuComponent extends LightningElement {
 
     subcategoryChange(event) {
         this.filterSubcategory = event.detail;
+        this.currentPage = 1;
         this.resolveDisplayedDishes();
     }
 
@@ -134,6 +144,24 @@ export default class MenuComponent extends LightningElement {
         return filteredDishes.filter((item) => {
           return item.Subcategory__c == this.filterSubcategory;
         });
+    }
+
+    repaintPaginationButtons() {
+        if(this.currentPage == 1) {
+            this.isFirstDisabled = true;
+            this.isPreviousDisabled = true;
+        } else {
+            this.isFirstDisabled = false;
+            this.isPreviousDisabled = false;
+        }
+    
+        if(this.currentPage >= this.amountPages) {
+            this.isNextDisabled = true;
+            this.isLastDisabled = true;
+        } else {
+            this.isNextDisabled = false;
+            this.isLastDisabled = false;
+        }
     }
     
 }

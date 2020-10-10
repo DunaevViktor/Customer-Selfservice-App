@@ -20,23 +20,32 @@
 
                     <template if:true={orders}>
 
-                        <p>Dishes you ordered:</p>
+                        <template if:false={isEmpty}>
 
-                        <lightning-datatable key-field="Id"
-                                             data={orders}
-                                             columns={columns}>
-                        </lightning-datatable>
+                            <p>Dishes you ordered:</p>
 
-                        <p class="slds-var-p-horizontal_small">Total orders price: {totalPrice}$</p>
+                            <lightning-datatable key-field="Id"
+                                                data={orders}
+                                                columns={columns}
+                                                hide-checkbox-column>
+                            </lightning-datatable>
+
+                            <p class="slds-var-p-horizontal_small">Total orders price: {totalPrice}$</p>
+
+                        </template>
+
+                        <template if:true={isEmpty}>
+                            Your order history is clear.
+                        </template>
 
                         <div class="slds-text-align_center modal_buttons">
-                            <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Close</button>
+                            <button class="slds-button slds-button_neutral" onclick={closeModal} title="Close">Close</button>
                         </div>
 
                     </template>
 
                     <template if:true={error}>
-                        <p>Error during attempt to get old orders</p>
+                        <p>Error during attempt to get old orders!</p>
                     </template>
 
                 </div>
