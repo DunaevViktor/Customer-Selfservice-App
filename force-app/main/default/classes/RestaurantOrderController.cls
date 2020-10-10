@@ -1,6 +1,5 @@
 public with sharing class RestaurantOrderController {
 
-    //(cacheable=true)
     @AuraEnabled
     public static Restaurant_Order__c getOrder() {
         Id userId = UserInfo.getUserId();
@@ -22,5 +21,21 @@ public with sharing class RestaurantOrderController {
             insert order;
         }
     }
-    
+
+    @AuraEnabled
+    public static List<Restaurant_Order__c> getPreviousOrders(){
+        Id userId = UserInfo.getUserId();
+        List<Restaurant_Order__c> orders;
+
+        try {
+            orders = [SELECT Name, OwnerId,	IsDelivery__c, Delivery_Address__c, 
+                             Order_Date__c, Status__c, Sum__c
+                      FROM Restaurant_Order__c WHERE OwnerId = :userId AND Status__c = 'Closed'];
+        } catch (System.QueryException queryException) {
+            orders = new List<Restaurant_Order__c>();
+        }
+
+        return orders;
+    }
+   
 }

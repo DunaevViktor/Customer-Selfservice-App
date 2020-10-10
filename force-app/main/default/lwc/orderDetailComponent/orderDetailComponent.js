@@ -35,12 +35,11 @@ export default class OrderDetailComponent extends LightningElement {
     }
 
     loadOrder() {
-        console.log('load order');
         getOrder()
         .then(result => {
         this.order = result;
         this.loadOrderItems();
-        setInterval(() => {
+        setTimeout(() => {
             this.publishMessage();
         }, 5000);
         })
