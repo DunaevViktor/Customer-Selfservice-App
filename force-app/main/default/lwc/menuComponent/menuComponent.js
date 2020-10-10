@@ -96,9 +96,14 @@ export default class MenuComponent extends LightningElement {
         this.resolveDisplayedDishes();
     }
 
+    amountChange(event) {
+        this.itemsOnPage = event.detail;
+        this.resolveDisplayedDishes();
+    }
+
     resolveDisplayedDishes() {
         const filteredDishes = this.filterDishes();
-        this.amountPages = Math.ceil(filteredDishes.length / 6);
+        this.amountPages = Math.ceil(filteredDishes.length / this.itemsOnPage);
         this.displayesDishes = filteredDishes.filter((item, index) => {
             return index >= (this.currentPage-1) * this.itemsOnPage && index < (this.currentPage) * this.itemsOnPage;
         });

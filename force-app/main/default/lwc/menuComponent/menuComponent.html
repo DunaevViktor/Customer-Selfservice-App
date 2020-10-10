@@ -5,7 +5,9 @@
 	
 			<template if:true={dishes}>
 
-				<c-pagination-component oncategorychange={categoryChange} onsubcategorychange={subcategoryChange}>
+				<c-pagination-component oncategorychange={categoryChange}
+										onsubcategorychange={subcategoryChange}
+										onamountchange={amountChange}>
 				</c-pagination-component>
 
 				<lightning-layout multiple-rows="true" pull-to-boundary="small">
