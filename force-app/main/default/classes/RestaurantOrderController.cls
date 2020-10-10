@@ -1,6 +1,7 @@
 public with sharing class RestaurantOrderController {
 
-    @AuraEnabled(cacheable=true)
+    //(cacheable=true)
+    @AuraEnabled
     public static Restaurant_Order__c getOrder() {
         Id userId = UserInfo.getUserId();
         Restaurant_Order__c order = [SELECT Name, OwnerId, Status__c FROM Restaurant_Order__c 
