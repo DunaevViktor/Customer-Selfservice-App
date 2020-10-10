@@ -5,12 +5,17 @@ import { APPLICATION_SCOPE, subscribe, unsubscribe, MessageContext } from 'light
 
 export default class MenuComponent extends LightningElement {
 
+    FILTER_ALL = '--All--';
+
     @wire(MessageContext)
     messageContext;
 
     dishes;
     error;
     isModalOpen = false;
+    filterCategory = this.FILTER_ALL;
+    filterSubcategory = this.FILTER_ALL;
+
     @track dishId;
     @track orderId;
     @track displayesDishes = [];
@@ -28,7 +33,6 @@ export default class MenuComponent extends LightningElement {
         .then(result => {
             this.dishes = result;
             this.resolveDisplayedDishes();
-            this.amountPages = Math.ceil(this.dishes.length / 6);
         })
         .catch(error => {
             this.error = error;
@@ -93,8 +97,37 @@ export default class MenuComponent extends LightningElement {
     }
 
     resolveDisplayedDishes() {
-        this.displayesDishes = this.dishes.filter((item, index) => {
+        const filteredDishes = this.filterDishes();
+        this.amountPages = Math.ceil(filteredDishes.length / 6);
+        this.displayesDishes = filteredDishes.filter((item, index) => {
             return index >= (this.currentPage-1) * this.itemsOnPage && index < (this.currentPage) * this.itemsOnPage;
+        });
+    }
+
+    categoryChange(event) {
+        this.filterCategory = event.detail;
+    }
+
+    subcategoryChange(event) {
+        this.filterSubcategory = event.detail;
+        this.resolveDisplayedDishes();
+    }
+
+    filterDishes() {
+        if(this.filterCategory == this.FILTER_ALL) {
+          return this.dishes;
+        }
+    
+        const filteredDishes = this.dishes.filter((item) => {
+          return item.Category__c == this.filterCategory;
+        });
+    
+        if(this.filterSubcategory == this.FILTER_ALL) {
+          return filteredDishes;
+        }
+    
+        return filteredDishes.filter((item) => {
+          return item.Subcategory__c == this.filterSubcategory;
         });
     }
     

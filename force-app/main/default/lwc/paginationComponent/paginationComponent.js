@@ -58,15 +58,19 @@ export default class PaginationComponent extends LightningElement {
         this.isEmpty = false;
         let dependValues = [];
 
+        this.dispatchCategoryChangeEvent();
+
         if(this.selectedCategory) {
             if(this.selectedCategory === '--All--') {
                 this.isEmpty = true;
                 dependValues = [{label:'--All--', value:'--All--'}];
-                this.selectedCategory = null;
-                this.selectedSubcategory = null;
+                this.selectedCategory = '--All--';
+                this.selectedSubcategory = '--All--';
+                this.dispatchSubcategoryChangeEvent();
                 return;
             }
 
+            dependValues = [{label:'--All--', value:'--All--'}];
             this.totalDependentValues.forEach(conValues => {
                 if(conValues.validFor[0] === this.controlValues[this.selectedCategory]) {
                     dependValues.push({
@@ -77,11 +81,24 @@ export default class PaginationComponent extends LightningElement {
             })
 
             this.dependentValues = dependValues;
+            this.selectedSubcategory = '--All--';
+            this.dispatchSubcategoryChangeEvent();
         }
     }
 
     handleSubcategoryChange(event) {
-        this.selectedState = event.target.value;
+        this.selectedSubcategory = event.target.value;
+        this.dispatchSubcategoryChangeEvent();
+    }
+
+    dispatchCategoryChangeEvent() {
+        const selectedEvent = new CustomEvent('categorychange', {detail: this.selectedCategory});
+        this.dispatchEvent(selectedEvent);
+    }
+
+    dispatchSubcategoryChangeEvent() {
+        const selectedEvent = new CustomEvent('subcategorychange', {detail: this.selectedSubcategory});
+        this.dispatchEvent(selectedEvent);
     }
     
 }
