@@ -5,6 +5,8 @@ import { updateRecord } from 'lightning/uiRecordApi';
 import ID_FIELD from '@salesforce/schema/Restaurant_Order__c.Id';
 import STATUS_FIELD from '@salesforce/schema/Restaurant_Order__c.Status__c';
 import SUM_FIELD from '@salesforce/schema/Restaurant_Order__c.Sum__c';
+import DELIVERY_FIELD from '@salesforce/schema/Restaurant_Order__c.IsDelivery__c';
+import DELIVERY_ADDRESS_FIELD from '@salesforce/schema/Restaurant_Order__c.Delivery_Address__c';
 
 export default class MakeOrder extends LightningElement {
 
@@ -48,6 +50,14 @@ export default class MakeOrder extends LightningElement {
         fields[ID_FIELD.fieldApiName] = this.order.Id;
         fields[STATUS_FIELD.fieldApiName] = 'Closed';
         fields[SUM_FIELD.fieldApiName] = this.totalPrice;
+        fields[DELIVERY_FIELD.fieldApiName] = this.isDelivery;
+
+        if(this.isDelivery) {
+            const input = this.template.querySelector('lightning-input')
+            const value = input.value;
+            fields[DELIVERY_ADDRESS_FIELD.fieldApiName] = value;
+            input.value = ''
+        }
 
         const recordInput = { fields };
 
