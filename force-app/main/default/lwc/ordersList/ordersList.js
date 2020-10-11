@@ -16,10 +16,10 @@ export default class OrdersList extends LightningElement {
 
     //{label: 'Owner', fieldName: 'OwnerId'}
     columns = [
-        {label: 'Name', fieldName: 'Name'},
-        {label: 'Date', fieldName: 'Order_Date__c'},
-        {label: 'Status', fieldName: 'Status__c'},
-        {label: 'Price', fieldName: 'Sum__c', type: 'currency'}
+        {label: 'Name', fieldName: 'Name', hideDefaultActions: true},
+        {label: 'Date', fieldName: 'Order_Date__c', hideDefaultActions: true},
+        {label: 'Status', fieldName: 'Status__c', hideDefaultActions: true},
+        {label: 'Price', fieldName: 'Sum__c', type: 'currency', hideDefaultActions: true}
     ];
 
     get isEmpty() {

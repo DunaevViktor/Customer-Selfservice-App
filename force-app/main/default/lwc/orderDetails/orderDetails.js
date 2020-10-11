@@ -5,11 +5,16 @@ export default class OrderDetails extends LightningElement {
     @api items;
     @track orderItems = [];
 
+    actions = [
+        { label: 'Delete', name: 'delete' }
+    ];
+
     columns = [
-        {label: 'Dish', fieldName: 'Title__c'},
-        {label: 'Comment', fieldName: 'Comment__c'},
-        {label: 'Amount', fieldName: 'Amount__c'},
-        {label: 'Price', fieldName: 'Cost__c'}
+        {label: 'Dish', fieldName: 'Title__c', hideDefaultActions: true},
+        {label: 'Comment', fieldName: 'Comment__c', hideDefaultActions: true},
+        {label: 'Amount', fieldName: 'Amount__c', hideDefaultActions: true},
+        {label: 'Price', fieldName: 'Cost__c', hideDefaultActions: true},
+        {type: 'action', typeAttributes: { rowActions: this.actions, menuAlignment: 'right' }}
     ];
 
     connectedCallback() {
@@ -37,6 +42,17 @@ export default class OrderDetails extends LightningElement {
     submitDetails(){
         const selectedEvent = new CustomEvent('makeorder', {detail: false});
         this.dispatchEvent(selectedEvent);
+    }
+
+    handleRowAction(event) {
+        const row = JSON.parse(JSON.stringify(event.detail.row));
+    
+        const selectedEvent = new CustomEvent('deleted', {detail: row.Id});
+        this.dispatchEvent(selectedEvent);
+    
+        this.orderItems = this.orderItems.filter((orderItem) => {
+            return orderItem.Id != row.Id;
+        });
     }
 
 }

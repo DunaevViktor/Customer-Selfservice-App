@@ -1,4 +1,5 @@
 import { LightningElement, wire, track } from 'lwc';
+import { deleteRecord } from 'lightning/uiRecordApi';
 import checkOrderExistence from '@salesforce/apex/RestaurantOrderController.checkOrderExistence';
 import getOrder from '@salesforce/apex/RestaurantOrderController.getOrder';
 import getOrderItemsByOrderId from '@salesforce/apex/OrderItemController.getOrderItemsByOrderId';
@@ -73,7 +74,6 @@ export default class OrderDetailComponent extends LightningElement {
         this.unsubscribeToMessageChannel();
     }
 
-    //+ , toFixed(2)
     resolveTotalPrice() {
         let sum = 0;
         this.orderItems.forEach((orderItem) => {
@@ -137,6 +137,21 @@ export default class OrderDetailComponent extends LightningElement {
         checkOrderExistence()
         .then(result => {
             this.loadOrder();
+        })
+        .catch(error => {
+            this.error = error;
+        })
+    }
+
+    deleteOrderItem(event) {
+        const id = event.detail;
+    
+        deleteRecord(id)
+        .then(() => {
+            this.orderItems = this.orderItems.filter((orderItem) => {
+                return orderItem.Id != id;
+            })
+            this.resolveTotalPrice();
         })
         .catch(error => {
             this.error = error;
