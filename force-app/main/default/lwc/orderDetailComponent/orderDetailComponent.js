@@ -98,6 +98,7 @@ export default class OrderDetailComponent extends LightningElement {
         })
         .catch(error => {
             this.error = error;
+            this.resolveTotalPrice();
         })
     }
 
