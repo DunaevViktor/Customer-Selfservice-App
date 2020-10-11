@@ -18,6 +18,7 @@ export default class MakeOrder extends LightningElement {
     ERROR_TITLE = 'Error';
     ERROR_MESSAGE = 'Error during submitting order!';
     ERROR_VARIANT = 'error';
+    ERROR_MESSAGE_EMPTY_ORDER = 'You cant create empty order!';
 
     DELIVERY_CHOISE = 'delivery';
 
@@ -47,6 +48,14 @@ export default class MakeOrder extends LightningElement {
     }
 
     makeOrder() {
+
+        if(this.totalPrice <= 0){
+            console
+            this.showToast(this.ERROR_TITLE, this.ERROR_MESSAGE_EMPTY_ORDER, this.ERROR_VARIANT);
+            //this.closeModal();
+            return;
+        }
+
         let date = new Date();
         const fields = {};
 
@@ -72,7 +81,7 @@ export default class MakeOrder extends LightningElement {
             this.showToast(this.SUCCESS_TITLE, this.SUCCESS_MESSAGE, this.SUCCESS_VARIANT);
         })
         .catch(error => {
-            this.showToast(this.ERROR_TITLE. ERROR_MESSAGE, this.ERROR_VARIANT);
+            this.showToast(this.ERROR_TITLE, this.ERROR_MESSAGE, this.ERROR_VARIANT);
         })
     }
 
@@ -81,4 +90,4 @@ export default class MakeOrder extends LightningElement {
         this.dispatchEvent(notification);
     }
 
-} 
+}
