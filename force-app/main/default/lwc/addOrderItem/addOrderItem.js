@@ -56,6 +56,7 @@ export default class AddOredItem extends LightningElement {
         const inputs = Array.from(this.template.querySelectorAll('lightning-input'));
         const [amount, comment] = inputs;
 
+        //amount of dishes [0,30]
         if(!amount.value || +amount.value <= 0 || +amount.value > 30 || !!amount.value.split(".")[1]) {
             return;
         }

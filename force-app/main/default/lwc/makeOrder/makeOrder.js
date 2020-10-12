@@ -26,6 +26,7 @@ export default class MakeOrder extends LightningElement {
     @api order;
 
     @track isDelivery = false;
+    @track deliveryValue = '';
 
     value = '';
     error;
@@ -43,8 +44,8 @@ export default class MakeOrder extends LightningElement {
     }
 
     handleReceive(event) {
-        const selectedOption = event.detail.value;
-        this.isDelivery = selectedOption == this.DELIVERY_CHOISE;
+        this.deliveryValue = event.detail.value;
+        this.isDelivery = this.deliveryValue == this.DELIVERY_CHOISE;
     }
 
     makeOrder() {
@@ -53,6 +54,10 @@ export default class MakeOrder extends LightningElement {
             console
             this.showToast(this.ERROR_TITLE, this.ERROR_MESSAGE_EMPTY_ORDER, this.ERROR_VARIANT);
             //this.closeModal();
+            return;
+        }
+
+        if(this.deliveryValue == ''){
             return;
         }
 
