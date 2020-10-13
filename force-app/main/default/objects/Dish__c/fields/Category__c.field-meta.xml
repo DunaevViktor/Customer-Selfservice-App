@@ -26,9 +26,44 @@
                 <label>Soups</label>
             </value>
             <value>
-                <fullName>Main dishes</fullName>
+                <fullName>Bakery</fullName>
                 <default>false</default>
-                <label>Main dishes</label>
+                <label>Bakery</label>
+            </value>
+            <value>
+                <fullName>Garnishes</fullName>
+                <default>false</default>
+                <label>Garnishes</label>
+            </value>
+            <value>
+                <fullName>Main course</fullName>
+                <default>false</default>
+                <label>Main course</label>
+            </value>
+            <value>
+                <fullName>Desserts</fullName>
+                <default>false</default>
+                <label>Desserts</label>
+            </value>
+            <value>
+                <fullName>Meaty</fullName>
+                <default>false</default>
+                <label>Meaty</label>
+            </value>
+            <value>
+                <fullName>Vegetable</fullName>
+                <default>false</default>
+                <label>Vegetable</label>
+            </value>
+            <value>
+                <fullName>Fish</fullName>
+                <default>false</default>
+                <label>Fish</label>
+            </value>
+            <value>
+                <fullName>Salads</fullName>
+                <default>false</default>
+                <label>Salads</label>
             </value>
         </valueSetDefinition>
     </valueSet>

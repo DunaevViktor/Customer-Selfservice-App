@@ -3,12 +3,12 @@
     <description>Order item is added!</description>
     <isExposed>true</isExposed>
     <lightningMessageFields>
-        <description>Element id that was added!</description>
-        <fieldName>orderItemId</fieldName>
-    </lightningMessageFields>
-    <lightningMessageFields>
         <description>Element price that was added!</description>
         <fieldName>orderItemPrice</fieldName>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <description>Element id that was added!</description>
+        <fieldName>orderItemId</fieldName>
     </lightningMessageFields>
     <masterLabel>OrderItemMessage</masterLabel>
 </LightningMessageChannel>
