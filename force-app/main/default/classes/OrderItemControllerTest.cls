@@ -1,9 +1,9 @@
+//Class for testing OrderItemController class
 @isTest
 public with sharing class OrderItemControllerTest {
 
     public static String OPEN_STATUS = 'Open';
 
-    //refresh
     public static String TEST_DISH_NAME = 'Garag limon';
     public static String TEST_DISH_CATEGORY = 'Drinks';
     public static String TEST_DISH_SUBCATEGORY = 'Beer';

@@ -1,5 +1,7 @@
+//Class for working with Restaurant_Order__c
 public with sharing class RestaurantOrderController {
 
+    //Finds and returns an open order for the current user
     @AuraEnabled
     public static Restaurant_Order__c getOrder() {
         Id userId = UserInfo.getUserId();
@@ -8,6 +10,8 @@ public with sharing class RestaurantOrderController {
         return order;
     }
 
+    //Сhecks whether an open order exists for the current user
+    //If it doesn't exist, it creates it
     @AuraEnabled
     public static void checkOrderExistence(){
         Id userId = UserInfo.getUserId();
@@ -22,6 +26,7 @@ public with sharing class RestaurantOrderController {
         }
     }
 
+    //Finds and returns closed orders for the current user
     @AuraEnabled
     public static List<Restaurant_Order__c> getPreviousOrders(){
         Id userId = UserInfo.getUserId();

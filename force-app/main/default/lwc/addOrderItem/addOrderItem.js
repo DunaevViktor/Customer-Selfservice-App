@@ -24,6 +24,9 @@ export default class AddOredItem extends LightningElement {
     ERROR_MESSAGE = 'Error during adding new order item!';
     ERROR_VARIANT = 'error';
 
+    objectApiName = ORDER_ITEM_OBJECT;
+    fields = [DISH_FIELD, AMOUNT_FIELD, COMMENT_FIELD];
+
     @wire(MessageContext)
     messageContext;
 
@@ -41,14 +44,6 @@ export default class AddOredItem extends LightningElement {
             this.error = error;
             this.dish = undefined;
         }
-    }
-
-    objectApiName = ORDER_ITEM_OBJECT;
-    fields = [DISH_FIELD, AMOUNT_FIELD, COMMENT_FIELD];
-
-    closeModal(){
-        const selectedEvent = new CustomEvent('closemodal', {detail: false});
-        this.dispatchEvent(selectedEvent);
     }
 
     submitDetails(){
@@ -93,6 +88,11 @@ export default class AddOredItem extends LightningElement {
     showToast(title, message, variant){
         const notification = new ShowToastEvent({title, message, variant});
         this.dispatchEvent(notification);
+    }
+
+    closeModal(){
+        const selectedEvent = new CustomEvent('closemodal', {detail: false});
+        this.dispatchEvent(selectedEvent);
     }
     
 }

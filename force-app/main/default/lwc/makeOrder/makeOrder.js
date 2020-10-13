@@ -20,6 +20,11 @@ export default class MakeOrder extends LightningElement {
     ERROR_VARIANT = 'error';
     ERROR_MESSAGE_EMPTY_ORDER = 'You cant create empty order!';
 
+    WARNING_TITLE = 'Warning';
+    WARNING_VARIANT = 'warning';
+    DONT_SPECIFY_RECEIVE = 'Please, specify receive method!';
+    SPECIFY_DELIVERY_ADDRESS = 'Please, specify delivery address!';
+
     DELIVERY_CHOISE = 'delivery';
 
     @api totalPrice;
@@ -31,33 +36,15 @@ export default class MakeOrder extends LightningElement {
     value = '';
     error;
 
-    get options() {
-        return [
-            { label: 'Pickup', value: 'pickup' },
-            { label: 'Home delivery', value: 'delivery' },
-        ];
-    }
-
-    closeModal() {
-        const selectedEvent = new CustomEvent('closemodal', {detail: false});
-        this.dispatchEvent(selectedEvent);
-    }
-
-    handleReceive(event) {
-        this.deliveryValue = event.detail.value;
-        this.isDelivery = this.deliveryValue == this.DELIVERY_CHOISE;
-    }
-
     makeOrder() {
 
         if(this.totalPrice <= 0){
-            console
             this.showToast(this.ERROR_TITLE, this.ERROR_MESSAGE_EMPTY_ORDER, this.ERROR_VARIANT);
-            //this.closeModal();
             return;
         }
 
         if(this.deliveryValue == ''){
+            this.showToast(this.WARNING_TITLE, this.DONT_SPECIFY_RECEIVE, this.WARNING_VARIANT);
             return;
         }
 
@@ -73,6 +60,12 @@ export default class MakeOrder extends LightningElement {
         if(this.isDelivery) {
             const input = this.template.querySelector('lightning-input')
             const value = input.value;
+
+            if(value == '') {
+                this.showToast(this.WARNING_TITLE, this.SPECIFY_DELIVERY_ADDRESS, this.WARNING_VARIANT);
+                return;
+            }
+
             fields[DELIVERY_ADDRESS_FIELD.fieldApiName] = value;
             input.value = ''
         }
@@ -90,9 +83,26 @@ export default class MakeOrder extends LightningElement {
         })
     }
 
+    get options() {
+        return [
+            { label: 'Pickup', value: 'pickup' },
+            { label: 'Home delivery', value: 'delivery' },
+        ];
+    }
+
+    handleReceive(event) {
+        this.deliveryValue = event.detail.value;
+        this.isDelivery = this.deliveryValue == this.DELIVERY_CHOISE;
+    }
+
     showToast(title, message, variant) {
         const notification = new ShowToastEvent({title, message, variant});
         this.dispatchEvent(notification);
+    }
+
+    closeModal() {
+        const selectedEvent = new CustomEvent('closemodal', {detail: false});
+        this.dispatchEvent(selectedEvent);
     }
 
 }

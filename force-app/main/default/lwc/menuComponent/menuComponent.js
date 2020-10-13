@@ -40,16 +40,7 @@ export default class MenuComponent extends LightningElement {
         })
         .catch(error => {
             this.error = error;
-        })
-    }
-
-    handleChoose(event){
-        this.dishId = event.detail;
-        this.isModalOpen = true;
-    }
-
-    closeModal(){
-        this.isModalOpen = false;
+        });
     }
 
     subscribeToMessageChannel() {
@@ -61,6 +52,51 @@ export default class MenuComponent extends LightningElement {
                 { scope: APPLICATION_SCOPE }
             );
         }
+    }
+
+    filterDishes() {
+        if(this.filterCategory == this.FILTER_ALL) {
+          return this.dishes;
+        }
+    
+        const filteredDishes = this.dishes.filter((item) => {
+          return item.Category__c == this.filterCategory;
+        });
+    
+        if(this.filterSubcategory == this.FILTER_ALL) {
+          return filteredDishes;
+        }
+    
+        return filteredDishes.filter((item) => {
+          return item.Subcategory__c == this.filterSubcategory;
+        });
+    }
+
+    repaintPaginationButtons() {
+        if(this.currentPage == 1) {
+            this.isFirstDisabled = true;
+            this.isPreviousDisabled = true;
+        } else {
+            this.isFirstDisabled = false;
+            this.isPreviousDisabled = false;
+        }
+    
+        if(this.currentPage >= this.amountPages) {
+            this.isNextDisabled = true;
+            this.isLastDisabled = true;
+        } else {
+            this.isNextDisabled = false;
+            this.isLastDisabled = false;
+        }
+    }
+
+    resolveDisplayedDishes() {
+        const filteredDishes = this.filterDishes();
+        this.amountPages = Math.ceil(filteredDishes.length / this.itemsOnPage);
+        this.displayesDishes = filteredDishes.filter((item, index) => {
+            return index >= (this.currentPage-1) * this.itemsOnPage && index < (this.currentPage) * this.itemsOnPage;
+        });
+        this.repaintPaginationButtons();
     }
 
     handleMessage(message) {
@@ -109,15 +145,6 @@ export default class MenuComponent extends LightningElement {
         this.resolveDisplayedDishes();
     }
 
-    resolveDisplayedDishes() {
-        const filteredDishes = this.filterDishes();
-        this.amountPages = Math.ceil(filteredDishes.length / this.itemsOnPage);
-        this.displayesDishes = filteredDishes.filter((item, index) => {
-            return index >= (this.currentPage-1) * this.itemsOnPage && index < (this.currentPage) * this.itemsOnPage;
-        });
-        this.repaintPaginationButtons();
-    }
-
     categoryChange(event) {
         this.filterCategory = event.detail;
     }
@@ -128,40 +155,13 @@ export default class MenuComponent extends LightningElement {
         this.resolveDisplayedDishes();
     }
 
-    filterDishes() {
-        if(this.filterCategory == this.FILTER_ALL) {
-          return this.dishes;
-        }
-    
-        const filteredDishes = this.dishes.filter((item) => {
-          return item.Category__c == this.filterCategory;
-        });
-    
-        if(this.filterSubcategory == this.FILTER_ALL) {
-          return filteredDishes;
-        }
-    
-        return filteredDishes.filter((item) => {
-          return item.Subcategory__c == this.filterSubcategory;
-        });
+    handleChoose(event){
+        this.dishId = event.detail;
+        this.isModalOpen = true;
     }
 
-    repaintPaginationButtons() {
-        if(this.currentPage == 1) {
-            this.isFirstDisabled = true;
-            this.isPreviousDisabled = true;
-        } else {
-            this.isFirstDisabled = false;
-            this.isPreviousDisabled = false;
-        }
-    
-        if(this.currentPage >= this.amountPages) {
-            this.isNextDisabled = true;
-            this.isLastDisabled = true;
-        } else {
-            this.isNextDisabled = false;
-            this.isLastDisabled = false;
-        }
+    closeModal(){
+        this.isModalOpen = false;
     }
     
 }

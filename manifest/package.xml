@@ -37,10 +37,6 @@
         <name>CustomObject</name>
     </types>
     <types>
-        <members>*</members>
-        <name>Community</name>
-    </types>
-    <types>
        <members>*</members>
        <name>LightningMessageChannel</name>
     </types>

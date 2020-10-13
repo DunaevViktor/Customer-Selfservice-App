@@ -1,3 +1,4 @@
+//Class for testing DishController class
 @isTest
 public with sharing class DishControllerTest {
 

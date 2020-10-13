@@ -30,7 +30,7 @@ export default class OrderDetailComponent extends LightningElement {
         })
         .catch(error => {
             this.error = error;
-        })
+        });
 
         this.subscribeToMessageChannel();
     }
@@ -40,13 +40,11 @@ export default class OrderDetailComponent extends LightningElement {
         .then(result => {
         this.order = result;
         this.loadOrderItems();
-        setTimeout(() => {
-            this.publishMessage();
-        }, 5000);
+        this.publishMessage();
         })
         .catch(error => {
         this.error = error;
-        })
+        });
     }
 
     subscribeToMessageChannel() {

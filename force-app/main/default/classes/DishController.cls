@@ -1,3 +1,4 @@
+//Class for getting dishes
 public with sharing class DishController {
 
     @AuraEnabled(cacheable=true)

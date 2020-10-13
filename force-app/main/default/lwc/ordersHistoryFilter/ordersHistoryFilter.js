@@ -71,12 +71,12 @@ export default class OrdersHistoryFilter extends LightningElement {
             orderItems.forEach((orderItem) => {
                 setDishes.add(orderItem.Dish__r.Title__c);
             });
-        })
+        });
     
         const arrayDishes = [...setDishes];
         arrayDishes.sort((firstTitle, secondTitle) => {
             return firstTitle.localeCompare(secondTitle);
-        })
+        });
     
         arrayDishes.forEach((dishTitle) => {
             this.dishValues.push({

@@ -30,6 +30,17 @@ export default class OrderDetails extends LightningElement {
         })
     }
 
+    handleRowAction(event) {
+        const row = JSON.parse(JSON.stringify(event.detail.row));
+    
+        const selectedEvent = new CustomEvent('deleted', {detail: row.Id});
+        this.dispatchEvent(selectedEvent);
+    
+        this.orderItems = this.orderItems.filter((orderItem) => {
+            return orderItem.Id != row.Id;
+        });
+    }
+
     get isEmpty() {
         return this.orderItems.length == 0;
     }
@@ -42,17 +53,6 @@ export default class OrderDetails extends LightningElement {
     submitDetails(){
         const selectedEvent = new CustomEvent('makeorder', {detail: false});
         this.dispatchEvent(selectedEvent);
-    }
-
-    handleRowAction(event) {
-        const row = JSON.parse(JSON.stringify(event.detail.row));
-    
-        const selectedEvent = new CustomEvent('deleted', {detail: row.Id});
-        this.dispatchEvent(selectedEvent);
-    
-        this.orderItems = this.orderItems.filter((orderItem) => {
-            return orderItem.Id != row.Id;
-        });
     }
 
 }

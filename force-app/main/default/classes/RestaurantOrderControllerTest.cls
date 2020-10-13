@@ -1,3 +1,4 @@
+//Class for testing RestaurantOrderController class
 @isTest
 public with sharing class RestaurantOrderControllerTest {
 

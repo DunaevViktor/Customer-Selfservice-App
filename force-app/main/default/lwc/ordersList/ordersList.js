@@ -14,7 +14,6 @@ export default class OrdersList extends LightningElement {
     filterDate = this.FILTER_ALL;
     filterDish = this.FILTER_ALL;
 
-    //{label: 'Owner', fieldName: 'OwnerId'}
     columns = [
         {label: 'Name', fieldName: 'Name', hideDefaultActions: true},
         {label: 'Date', fieldName: 'Order_Date__c', hideDefaultActions: true},
@@ -22,21 +21,8 @@ export default class OrdersList extends LightningElement {
         {label: 'Price', fieldName: 'Sum__c', type: 'currency', hideDefaultActions: true}
     ];
 
-    get isEmpty() {
-        return this.orders.length == 0;
-    }
-
-    get isEmptyFilter() {
-        return this.filteredOrders.length == 0;
-    }
-
     connectedCallback() {
         this.loadOldOrders();
-    }
-
-    closeModal() {
-        const selectedEvent = new CustomEvent('closemodal', {detail: false});
-        this.dispatchEvent(selectedEvent);
     }
 
     loadOldOrders() {
@@ -53,7 +39,7 @@ export default class OrdersList extends LightningElement {
 
     solveTotalPrice() {
         let sum = 0.0;
-        this.orders.forEach((order) => {
+        this.filteredOrders.forEach((order) => {
         sum += +order.Sum__c;
         });
         this.totalPrice = sum.toFixed(2);
@@ -88,28 +74,32 @@ export default class OrdersList extends LightningElement {
     filterStatusChange(event) {
         this.filterStatus = event.detail;
         this.filterOrders();
-        this.solveTotalPriceFilter();
+        this.solveTotalPrice();
     }
 
     filterDateChange(event) {
         this.filterDate = event.detail;
         this.filterOrders();
-        this.solveTotalPriceFilter();
+        this.solveTotalPrice();
     }
 
     filterDishChange(event) {
         this.filterDish = event.detail;
         this.filterOrders();
-        this.solveTotalPriceFilter();
+        this.solveTotalPrice();
     }
 
-    //demo fix
-    solveTotalPriceFilter() {
-        let sum = 0.0;
-        this.filteredOrders.forEach((order) => {
-        sum += +order.Sum__c;
-        });
-        this.totalPrice = sum.toFixed(2);
+    get isEmpty() {
+        return this.orders.length == 0;
+    }
+
+    get isEmptyFilter() {
+        return this.filteredOrders.length == 0;
+    }
+
+    closeModal() {
+        const selectedEvent = new CustomEvent('closemodal', {detail: false});
+        this.dispatchEvent(selectedEvent);
     }
 
 }
