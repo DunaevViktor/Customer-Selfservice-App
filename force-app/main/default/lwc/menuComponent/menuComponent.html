@@ -2,35 +2,43 @@
 
 	<lightning-card title="Menu Component" icon-name="utility:food_and_drink">
 		<div class="slds-card__body_inner">
+
+			<template if:true={loading}>
+				<c-spinner-component></c-spinner-component>
+			</template>
+
+			<template if:false={loading}>
+
+				<template if:true={dishes}>
+
+					<c-pagination-component oncategorychange={categoryChange}
+											onsubcategorychange={subcategoryChange}
+											onamountchange={amountChange}>
+					</c-pagination-component>
 	
-			<template if:true={dishes}>
+					<lightning-layout multiple-rows="true" pull-to-boundary="small">
+						<template for:each={displayesDishes} for:item="dish">
+							<lightning-layout-item key={dish.Id}  size="4" class="slds-var-p-around_x-small">
+								<c-menu-item dish={dish} onchoosed={handleChoose}></c-menu-item>
+							</lightning-layout-item>
+						</template>
+					</lightning-layout>
+				</template>
+	
+				<template if:true={dishesLength}>
+					<div class="slds-text-align_center slds-var-m-around_medium">
+						<p>No items to display.</p>
+					</div>	
+				</template>
+		
+				<template if:true={error}>
+					<div class="slds-text-color_error">
+						There are no dishes to display or an error occurred while loading!
+					</div>
+				</template>
 
-				<c-pagination-component oncategorychange={categoryChange}
-										onsubcategorychange={subcategoryChange}
-										onamountchange={amountChange}>
-				</c-pagination-component>
-
-				<lightning-layout multiple-rows="true" pull-to-boundary="small">
-					<template for:each={displayesDishes} for:item="dish">
-						<lightning-layout-item key={dish.Id}  size="4" class="slds-var-p-around_x-small">
-							<c-menu-item dish={dish} onchoosed={handleChoose}></c-menu-item>
-						</lightning-layout-item>
-					</template>
-				</lightning-layout>
-			</template>
-
-			<template if:true={dishesLength}>
-				<div class="slds-text-align_center slds-var-m-around_medium">
-					<p>No items to display.</p>
-				</div>	
 			</template>
 	
-			<template if:true={error}>
-				<div class="slds-text-color_error">
-					There are no dishes to display or an error occurred while loading!
-				</div>
-			</template>
-
 		</div>
 
 		<div class="slds-text-align_center">

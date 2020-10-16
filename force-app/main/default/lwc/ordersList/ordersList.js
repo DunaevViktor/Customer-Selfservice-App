@@ -7,6 +7,7 @@ export default class OrdersList extends LightningElement {
 
     @track totalPrice;
     @track filteredOrders= [];
+    @track loading = false;
 
     orders;
     error;
@@ -22,6 +23,7 @@ export default class OrdersList extends LightningElement {
     ];
 
     connectedCallback() {
+        this.loading = true;
         this.loadOldOrders();
     }
 
@@ -31,9 +33,11 @@ export default class OrdersList extends LightningElement {
         this.orders = result;
         this.filterOrders();
         this.solveTotalPrice();
+        this.loading = false;
         })
         .catch(error => {
         this.error = error;
+        this.loading = false;
         })
     }
 

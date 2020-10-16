@@ -26,8 +26,10 @@ export default class MenuComponent extends LightningElement {
     @track isPreviousDisabled = true;
     @track isNextDisabled = true;
     @track isLastDisabled = true;
+    @track loading = false;
 
     connectedCallback(){
+        this.loading = true;
         this.loadMenu();
         this.subscribeToMessageChannel();
     }
@@ -37,9 +39,11 @@ export default class MenuComponent extends LightningElement {
         .then(result => {
             this.dishes = result;
             this.resolveDisplayedDishes();
+            this.loading = false;
         })
         .catch(error => {
             this.error = error;
+            this.loading = false;
         });
     }
 

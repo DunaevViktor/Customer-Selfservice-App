@@ -18,12 +18,13 @@ export default class OrderDetailComponent extends LightningElement {
 
     @track order;
     @track totalPrice = 0.0;
+    @track loading = false;
 
     @wire(MessageContext)
     messageContext;
 
     connectedCallback() {
-
+        this.loading = true;
         checkOrderExistence()
         .then(result => {
             this.loadOrder();
@@ -41,9 +42,11 @@ export default class OrderDetailComponent extends LightningElement {
         this.order = result;
         this.loadOrderItems();
         this.publishMessage();
+        this.loading = false;
         })
         .catch(error => {
         this.error = error;
+        this.loading = false;
         });
     }
 
@@ -131,6 +134,7 @@ export default class OrderDetailComponent extends LightningElement {
     }
 
     submitOrder() {
+        this.loading = true;
         this.closeConfirmModal();
         checkOrderExistence()
         .then(result => {

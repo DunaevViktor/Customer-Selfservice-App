@@ -18,6 +18,10 @@
 
                 <div class="modal_form orders_modal" id="modal-content-id-1">
 
+                    <template if:true={loading}>
+                        <c-spinner-component></c-spinner-component>
+                    </template>
+
                     <template if:true={orders}>
 
                         <template if:false={isEmpty}>
@@ -52,15 +56,15 @@
                             Your order history is clear.
                         </template>
 
-                        <div class="slds-text-align_center modal_buttons">
-                            <button class="slds-button slds-button_neutral" onclick={closeModal} title="Close">Close</button>
-                        </div>
-
                     </template>
 
                     <template if:true={error}>
                         <p>Error during attempt to get old orders!</p>
                     </template>
+
+                    <div class="slds-text-align_center modal_buttons">
+                        <button class="slds-button slds-button_neutral" onclick={closeModal} title="Close">Close</button>
+                    </div>
 
                 </div>
 

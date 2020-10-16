@@ -4,6 +4,7 @@ export default class OrderDetails extends LightningElement {
 
     @api items;
     @track orderItems = [];
+    @track loading = false;
 
     actions = [
         { label: 'Delete', name: 'delete' }
@@ -27,7 +28,8 @@ export default class OrderDetails extends LightningElement {
             orderItem.Amount__c = item.Amount__c;
             orderItem.Cost__c = item.Cost__c;
             this.orderItems.push(orderItem);
-        })
+        });
+        this.loading = false;
     }
 
     handleRowAction(event) {
