@@ -17,7 +17,8 @@ export default class OrdersList extends LightningElement {
 
     columns = [
         {label: 'Name', fieldName: 'Name', hideDefaultActions: true},
-        {label: 'Date', fieldName: 'Order_Date__c', hideDefaultActions: true},
+        {label: 'Date', fieldName: 'Order_Date__c', hideDefaultActions: true, type: "date-local",
+            typeAttributes: { year: "numeric", month: "2-digit", day: "2-digit"} },
         {label: 'Status', fieldName: 'Status__c', hideDefaultActions: true},
         {label: 'Price', fieldName: 'Sum__c', type: 'currency', hideDefaultActions: true}
     ];
