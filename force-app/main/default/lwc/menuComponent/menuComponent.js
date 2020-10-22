@@ -3,7 +3,25 @@ import getListOfDishes from '@salesforce/apex/DishController.getListOfDishes';
 import ORDER_MC from "@salesforce/messageChannel/OrderMessage__c";
 import { APPLICATION_SCOPE, subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
 
+import menu from '@salesforce/label/c.menu';
+import noElements from '@salesforce/label/c.noElements';
+import errorLoadingMenu from '@salesforce/label/c.errorLoadingMenu';
+import firstPage from '@salesforce/label/c.firstPage';
+import previousPage from '@salesforce/label/c.previousPage';
+import nextPage from '@salesforce/label/c.nextPage';
+import lastPage from '@salesforce/label/c.lastPage';
+
 export default class MenuComponent extends LightningElement {
+
+    label = {
+        menu,
+        noElements,
+        errorLoadingMenu,
+        firstPage,
+        previousPage,
+        nextPage,
+        lastPage
+    };
 
     FILTER_ALL = '--All--';
 

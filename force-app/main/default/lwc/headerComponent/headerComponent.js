@@ -1,3 +1,9 @@
 import { LightningElement } from 'lwc';
 
-export default class HeaderComponent extends LightningElement {}
+import header from '@salesforce/label/c.header';
+
+export default class HeaderComponent extends LightningElement {
+    label = {
+        header
+    };
+}
