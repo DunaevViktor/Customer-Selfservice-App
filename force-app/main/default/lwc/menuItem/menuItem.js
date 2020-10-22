@@ -1,7 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 
-//import LOCALE from '@salesforce/i18n/locale';
-//import CURRENCY from '@salesforce/i18n/currency';
+import LOCALE from '@salesforce/i18n/locale';
+import CURRENCY from '@salesforce/i18n/currency';
 
 import category from '@salesforce/label/c.category';
 import description from '@salesforce/label/c.description';
@@ -19,18 +19,18 @@ export default class MenuItem extends LightningElement {
 
     @api dish;
 
-    //@track formattedCurrency;
+    @track formattedPrice;
 
-    /*connectedCallback() {
-        this.formattedCurrency = new Intl.NumberFormat(LOCALE, {
+    connectedCallback() {
+        this.formattedPrice = new Intl.NumberFormat(LOCALE, {
             style: 'currency',
             currency: CURRENCY,
             currencyDisplay: 'symbol'
         }).format(this.dish.Price__c);
-    }*/
+    }
 
     handleClick(){
-        const selectedEvent = new CustomEvent('choosed', {detail: this.dish.Id});
+        const selectedEvent = new CustomEvent('choosed', {detail: this.dish});
         this.dispatchEvent(selectedEvent);
     }
     

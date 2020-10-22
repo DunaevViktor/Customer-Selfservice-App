@@ -1,13 +1,9 @@
-import { LightningElement, api, wire } from 'lwc';
-import { getRecord, createRecord } from 'lightning/uiRecordApi';
+import { LightningElement, api, wire, track } from 'lwc';
+import { createRecord } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import MESSAGE_CHANNEL from "@salesforce/messageChannel/OrderItemMessage__c";
 import { publish, MessageContext } from 'lightning/messageService';
-
-import TITLE_FIELD from '@salesforce/schema/Dish__c.Title__c';
-import DESCRIPTION_FIELD from '@salesforce/schema/Dish__c.Description__c';
-import PRICE_FIELD from '@salesforce/schema/Dish__c.Price__c';
 
 import ORDER_ITEM_OBJECT from '@salesforce/schema/Order_Item__c';
 import DISH_FIELD from '@salesforce/schema/Order_Item__c.Dish__c';
@@ -28,6 +24,9 @@ import errorAddOrderItem from '@salesforce/label/c.errorAddOrderItem';
 import sucessfullyAddToOrder from '@salesforce/label/c.sucessfullyAddToOrder';
 import error from '@salesforce/label/c.error';
 import success from '@salesforce/label/c.success';
+
+import LOCALE from '@salesforce/i18n/locale';
+import CURRENCY from '@salesforce/i18n/currency';
 
 export default class AddOredItem extends LightningElement {
 
@@ -58,22 +57,19 @@ export default class AddOredItem extends LightningElement {
     @wire(MessageContext)
     messageContext;
 
-    @api dishid;
+    @api dish;
     @api orderid;
-    dish;
 
-    @wire(getRecord, {recordId: '$dishid', fields: [TITLE_FIELD, DESCRIPTION_FIELD, PRICE_FIELD]})
-    wiredAccount({data, error}){
-        if(data){
-            this.dish = data;
-            this.error = undefined;
-        }
-        else if(error){
-            this.error = error;
-            this.dish = undefined;
-        }
+    @track formattedPrice;
+
+    connectedCallback() {
+        this.formattedPrice = new Intl.NumberFormat(LOCALE, {
+            style: 'currency',
+            currency: CURRENCY,
+            currencyDisplay: 'symbol'
+        }).format(this.dish.Price__c);
     }
-
+    
     submitDetails(){
 
         const inputs = Array.from(this.template.querySelectorAll('lightning-input'));
@@ -87,7 +83,7 @@ export default class AddOredItem extends LightningElement {
         const recordInput = {
             apiName: ORDER_ITEM_OBJECT.objectApiName,
             fields: {
-                [DISH_FIELD.fieldApiName]: this.dishid,
+                [DISH_FIELD.fieldApiName]: this.dish.Id,
                 [AMOUNT_FIELD.fieldApiName]: +amount.value,
                 [COMMENT_FIELD.fieldApiName]: comment.value,
                 [ORDER_FIELD.fieldApiName] : this.orderid

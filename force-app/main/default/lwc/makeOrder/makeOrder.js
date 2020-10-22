@@ -9,8 +9,8 @@ import DELIVERY_FIELD from '@salesforce/schema/Restaurant_Order__c.IsDelivery__c
 import DELIVERY_ADDRESS_FIELD from '@salesforce/schema/Restaurant_Order__c.Delivery_Address__c';
 import CLOSE_DATE_FIELD from '@salesforce/schema/Restaurant_Order__c.Order_Date__c';
 
-//import LOCALE from '@salesforce/i18n/locale';
-//import CURRENCY from '@salesforce/i18n/currency';
+import LOCALE from '@salesforce/i18n/locale';
+import CURRENCY from '@salesforce/i18n/currency';
 
 import orderConfirm from '@salesforce/label/c.orderConfirm';
 import totalOrderPrice from '@salesforce/label/c.totalOrderPrice';
@@ -62,18 +62,18 @@ export default class MakeOrder extends LightningElement {
 
     @track isDelivery = false;
     @track deliveryValue = '';
-    //@track displayedPrice = 0.0;
+    @track displayedPrice = 0.0;
 
     value = '';
     error;
 
-    /*connectedCallback() {
+    connectedCallback() {
         this.displayedPrice = new Intl.NumberFormat(LOCALE, {
             style: 'currency',
             currency: CURRENCY,
             currencyDisplay: 'symbol'
         }).format(this.totalPrice);
-    }*/
+    }
 
     makeOrder() {
 

@@ -30,9 +30,11 @@ public with sharing class RestaurantOrderController {
     @AuraEnabled
     public static List<Restaurant_Order__c> getPreviousOrders(){
         Id userId = UserInfo.getUserId();
-        List<Restaurant_Order__c> orders = [SELECT Name, OwnerId,	IsDelivery__c, Delivery_Address__c, 
-                            Order_Date__c, Status__c, Sum__c, (SELECT Dish__r.Title__c FROM Order_Items__r)
-                            FROM Restaurant_Order__c WHERE OwnerId = :userId AND Status__c = 'Closed'];
+        List<Restaurant_Order__c> orders = [SELECT Name, OwnerId, IsDelivery__c, Delivery_Address__c, 
+                            Order_Date__c, Status__c, convertCurrency(Sum__c) Sum__c, 
+                            (SELECT Dish__r.Title__c FROM Order_Items__r)
+                            FROM Restaurant_Order__c WHERE OwnerId = :userId 
+                            AND Status__c = 'Closed' ORDER BY Order_Date__c];
         
         return orders;
     }

@@ -37,8 +37,7 @@ export default class OrderDetails extends LightningElement {
         {label: dish, fieldName: 'Title__c', hideDefaultActions: true},
         {label: comment, fieldName: 'Comment__c', hideDefaultActions: true},
         {label: amount, fieldName: 'Amount__c', hideDefaultActions: true},
-        //type: 'currency'
-        {label: price, fieldName: 'Cost__c', hideDefaultActions: true},
+        {label: price, fieldName: 'Cost__c', type: 'currency', hideDefaultActions: true},
         {type: 'action', typeAttributes: { rowActions: this.actions, menuAlignment: 'right' }}
     ];
 

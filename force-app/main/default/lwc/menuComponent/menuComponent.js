@@ -34,7 +34,7 @@ export default class MenuComponent extends LightningElement {
     filterCategory = this.FILTER_ALL;
     filterSubcategory = this.FILTER_ALL;
 
-    @track dishId;
+    @track dish;
     @track orderId;
     @track displayesDishes = [];
     @track currentPage = 1;
@@ -178,7 +178,7 @@ export default class MenuComponent extends LightningElement {
     }
 
     handleChoose(event){
-        this.dishId = event.detail;
+        this.dish = event.detail;
         this.isModalOpen = true;
     }
 

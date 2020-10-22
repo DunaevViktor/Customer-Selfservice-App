@@ -1,8 +1,8 @@
 import { LightningElement, track, wire } from 'lwc';
 import getPreviousOrders from '@salesforce/apex/RestaurantOrderController.getPreviousOrders';
 
-//import LOCALE from '@salesforce/i18n/locale';
-//import CURRENCY from '@salesforce/i18n/currency';
+import LOCALE from '@salesforce/i18n/locale';
+import CURRENCY from '@salesforce/i18n/currency';
 
 import close from '@salesforce/label/c.close';
 import dishYouOrdered from '@salesforce/label/c.dishYouOrdered';
@@ -73,13 +73,11 @@ export default class OrdersList extends LightningElement {
         sum += +order.Sum__c;
         });
         this.totalPrice = sum.toFixed(2);
-        /*
         this.totalPrice = new Intl.NumberFormat(LOCALE, {
             style: 'currency',
             currency: CURRENCY,
             currencyDisplay: 'symbol'
         }).format(sum.toFixed(2));
-        */
     }
 
     filterOrders() {
