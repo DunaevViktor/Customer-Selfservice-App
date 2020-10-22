@@ -1,6 +1,6 @@
 # Customer-Selfservice-App
 
-### Self-service application for restaurant visitors. Consists of Lightning components (LWC).
+### Self-service application for restaurant visitors. Consists of Lightning components (LWC). Supports localization of date, currency (USD, EUR, BYN) and language (EN, RU).
 
 ### Requirements for basic elements:
  1. Menu. 
